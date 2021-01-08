@@ -12,6 +12,7 @@ pub mod prelude {
     pub use hal::prelude::*;
 }
 
+use nrf9160_hal::gpio::Disconnected;
 use hal::{
     gpio::{p0, Floating, Input, Level, Output, Pin, PullUp, PushPull},
     pac::{CorePeripherals, Peripherals},
@@ -424,7 +425,7 @@ impl Board {
         Self::new(CorePeripherals::steal(), Peripherals::steal())
     }
 
-    fn new(cp: CorePeripherals, p: Peripherals) -> Self {
+    pub fn new(cp: CorePeripherals, p: Peripherals) -> Self {
         let pins0 = p0::Parts::new(p.P0_NS);
 
         // The Actinius Icarus features an USB CDC port. It features HWFC but
@@ -488,8 +489,8 @@ impl Board {
                 // UART1 TX is on P0_23
                 // UART1 RX is on P0_24
                 // UART CTS is on P0_25,
-                // TWIM2 SDA is on P0_26
-                // TWIM2 SCL is on P0_27
+                SDA: pins0.p0_26,
+                SCL: pins0.p0_27,
                 // Accel IRQ0 is on P0_28
                 // Accel IRQ1 is on P0_29
                 D30: pins0.p0_30,
@@ -578,11 +579,11 @@ impl Board {
 /// The nRF9160 pins that are available on the nRF9160DK
 #[allow(non_snake_case)]
 pub struct Pins {
-    pub D0: p0::P0_00<Input<Floating>>,
-    pub D1: p0::P0_01<Input<Floating>>,
-    pub D2: p0::P0_02<Input<Floating>>,
-    pub D3: p0::P0_03<Input<Floating>>,
-    pub D4: p0::P0_04<Input<Floating>>,
+    pub D0: p0::P0_00<Disconnected>,
+    pub D1: p0::P0_01<Disconnected>,
+    pub D2: p0::P0_02<Disconnected>,
+    pub D3: p0::P0_03<Disconnected>,
+    pub D4: p0::P0_04<Disconnected>,
     // Button is on P0_05
     // UART RX is on P0_06
     // UART RTS is on P0_07
@@ -591,24 +592,24 @@ pub struct Pins {
     // Red LED is on P0_10
     // Green LED is on P0_11
     // Blue LED is on P0_12
-    pub A1: p0::P0_14<Input<Floating>>,
-    pub A2: p0::P0_15<Input<Floating>>,
-    pub A3: p0::P0_16<Input<Floating>>,
-    pub A4: p0::P0_17<Input<Floating>>,
-    pub A5: p0::P0_18<Input<Floating>>,
-    pub A6: p0::P0_19<Input<Floating>>,
-    pub D20: p0::P0_20<Input<Floating>>, // Also labelled as SPI3 SCK
-    pub D21: p0::P0_21<Input<Floating>>, // Also labelled as SPI3 MOSI
-    pub D22: p0::P0_22<Input<Floating>>, // Also labelled as SPI3 MISO
+    pub A1: p0::P0_14<Disconnected>,
+    pub A2: p0::P0_15<Disconnected>,
+    pub A3: p0::P0_16<Disconnected>,
+    pub A4: p0::P0_17<Disconnected>,
+    pub A5: p0::P0_18<Disconnected>,
+    pub A6: p0::P0_19<Disconnected>,
+    pub D20: p0::P0_20<Disconnected>, // Also labelled as SPI3 SCK
+    pub D21: p0::P0_21<Disconnected>, // Also labelled as SPI3 MOSI
+    pub D22: p0::P0_22<Disconnected>, // Also labelled as SPI3 MISO
     // UART1 TX is on P0_23
     // UART1 RX is on P0_24
     // UART CTS is on P0_25,
-    // TWIM2 SDA is on P0_26
-    // TWIM2 SCL is on P0_27
+    pub SDA: p0::P0_26<Disconnected>,
+    pub SCL: p0::P0_27<Disconnected>,
     // Accel IRQ0 is on P0_28
     // Accel IRQ1 is on P0_29
-    pub D30: p0::P0_30<Input<Floating>>,
-    pub D31: p0::P0_31<Input<Floating>>,
+    pub D30: p0::P0_30<Disconnected>,
+    pub D31: p0::P0_31<Disconnected>,
 }
 
 /// The LEDs on the Actinius Icarus board
