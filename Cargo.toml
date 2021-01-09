@@ -12,7 +12,8 @@ readme = "README.md"
 version = "0.1.0"
 
 [dependencies]
-nrf9160-hal = {git = "https://github.com/nrf-rs/nrf-hal#d2eacea5"}
+nrf9160-hal = {git = "https://github.com/macthestack/nrf-hal"}
+# nrf9160-hal = {path = "../nrf-hal/nrf9160-hal"}
 
 [dev-dependencies]
 cortex-m-rt = "0.6.11"
