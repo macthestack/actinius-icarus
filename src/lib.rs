@@ -12,12 +12,12 @@ pub mod prelude {
     pub use hal::prelude::*;
 }
 
-use nrf9160_hal::gpio::Disconnected;
 use hal::{
     gpio::{p0, Floating, Input, Level, Output, Pin, PullUp, PushPull},
     pac::{CorePeripherals, Peripherals},
     uarte::{self, Baudrate as UartBaudrate, Parity as UartParity, Uarte},
 };
+use nrf9160_hal::gpio::Disconnected;
 
 use hal::prelude::{InputPin, OutputPin};
 
@@ -30,14 +30,17 @@ pub struct Board {
     pub pins: Pins,
 
     /// The Actinius Icarus UART which is wired to the virtual USB CDC port
+    #[cfg(feature = "cdc-uart")]
     pub cdc_uart: Uarte<pac::UARTE0_NS>,
 
     /// The Actinius Icarus UART which is wired to pins 23 and 24
+    #[cfg(feature = "pin-uart")]
     pub pin_uart: Uarte<pac::UARTE1_NS>,
 
     /// The RGB LEDs on the Actinius Icarus board
     pub leds: Leds,
 
+    #[cfg(feature = "accel-irq")]
     pub accel_irq: [Pin<Input<PullUp>>; 2],
 
     /// The button on the Actinius Icarus board
@@ -431,6 +434,7 @@ impl Board {
         // The Actinius Icarus features an USB CDC port. It features HWFC but
         // does not have to use it. It can transmit a flexible baudrate of up
         // to 1Mbps.
+        #[cfg(feature = "cdc-uart")]
         let cdc_uart = Uarte::new(
             p.UARTE0_NS,
             uarte::Pins {
@@ -445,6 +449,7 @@ impl Board {
 
         // The Actinius Icarus also features a UART mapped out to edge pins 23
         // and 24.
+        #[cfg(feature = "pin-uart")]
         let pin_uart = Uarte::new(
             p.UARTE1_NS,
             uarte::Pins {
@@ -458,7 +463,9 @@ impl Board {
         );
 
         Board {
+            #[cfg(feature = "cdc-uart")]
             cdc_uart,
+            #[cfg(feature = "pin-uart")]
             pin_uart,
             sim_select: pins0.p0_08.into_push_pull_output(Level::High).degrade(),
             vbat: pins0.p0_13.into_floating_input(),
@@ -503,6 +510,7 @@ impl Board {
                 blue: Led::new(pins0.p0_12.degrade()),
             },
 
+            #[cfg(feature = "accel-irq")]
             accel_irq: [
                 pins0.p0_28.into_pullup_input().degrade(),
                 pins0.p0_29.into_pullup_input().degrade(),
