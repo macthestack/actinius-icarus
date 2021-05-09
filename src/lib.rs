@@ -12,11 +12,7 @@ pub mod prelude {
     pub use hal::prelude::*;
 }
 
-use hal::{
-    gpio::{p0, Floating, Input, Level, Output, Pin, PullUp, PushPull},
-    pac::{CorePeripherals, Peripherals},
-    uarte::{self, Baudrate as UartBaudrate, Parity as UartParity, Uarte},
-};
+use hal::{gpio::{p0, Floating, Input, Level, Output, Pin, PullUp, PushPull}, pac::{CorePeripherals, Peripherals}};
 use nrf9160_hal::gpio::Disconnected;
 
 use hal::prelude::{InputPin, OutputPin};
@@ -443,8 +439,8 @@ impl Board {
                 cts: Some(pins0.p0_25.into_floating_input().degrade()),
                 rts: Some(pins0.p0_07.into_push_pull_output(Level::High).degrade()),
             },
-            UartParity::EXCLUDED,
-            UartBaudrate::BAUD115200,
+            uarte::Parity::EXCLUDED,
+            uarte::Baudrate::BAUD115200,
         );
 
         // The Actinius Icarus also features a UART mapped out to edge pins 23
@@ -458,8 +454,8 @@ impl Board {
                 cts: None,
                 rts: None,
             },
-            UartParity::EXCLUDED,
-            UartBaudrate::BAUD115200,
+            uarte::Parity::EXCLUDED,
+            uarte::Baudrate::BAUD115200,
         );
 
         Board {
