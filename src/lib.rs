@@ -12,7 +12,7 @@ pub mod prelude {
     pub use hal::prelude::*;
 }
 
-use hal::{gpio::{p0, Floating, Input, Level, Output, Pin, PullUp, PushPull}, pac::{CorePeripherals, Peripherals}};
+use hal::{Uarte, gpio::{p0, Floating, Input, Level, Output, Pin, PullUp, PushPull}, pac::{CorePeripherals, Peripherals}};
 use nrf9160_hal::gpio::Disconnected;
 
 use hal::prelude::{InputPin, OutputPin};
@@ -433,14 +433,14 @@ impl Board {
         #[cfg(feature = "cdc-uart")]
         let cdc_uart = Uarte::new(
             p.UARTE0_NS,
-            uarte::Pins {
+            hal::uarte::Pins {
                 txd: pins0.p0_09.into_push_pull_output(Level::High).degrade(),
                 rxd: pins0.p0_06.into_floating_input().degrade(),
                 cts: Some(pins0.p0_25.into_floating_input().degrade()),
                 rts: Some(pins0.p0_07.into_push_pull_output(Level::High).degrade()),
             },
-            uarte::Parity::EXCLUDED,
-            uarte::Baudrate::BAUD115200,
+            hal::uarte::Parity::EXCLUDED,
+            hal::uarte::Baudrate::BAUD115200,
         );
 
         // The Actinius Icarus also features a UART mapped out to edge pins 23
@@ -448,14 +448,14 @@ impl Board {
         #[cfg(feature = "pin-uart")]
         let pin_uart = Uarte::new(
             p.UARTE1_NS,
-            uarte::Pins {
+            hal::uarte::Pins {
                 txd: pins0.p0_23.into_push_pull_output(Level::High).degrade(),
                 rxd: pins0.p0_24.into_floating_input().degrade(),
                 cts: None,
                 rts: None,
             },
-            uarte::Parity::EXCLUDED,
-            uarte::Baudrate::BAUD115200,
+            hal::uarte::Parity::EXCLUDED,
+            hal::uarte::Baudrate::BAUD115200,
         );
 
         Board {

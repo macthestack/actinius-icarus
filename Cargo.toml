@@ -12,10 +12,10 @@ readme = "README.md"
 version = "0.1.0"
 
 [dependencies]
-nrf9160-hal = {git = "https://github.com/nrf-rs/nrf-hal"}
+nrf9160-hal = "0.13.0"
 
 [dev-dependencies]
-cortex-m-rt = "0.6.13"
+cortex-m-rt = "0.7.0"
 nb = "1.0.0"
 panic-halt = "0.2.0"
 panic-semihosting = "0.5.6"
